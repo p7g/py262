@@ -1,7 +1,7 @@
 import enum
 
-from py262.value import Value, value
 from py262.completion import Completion, NormalCompletion, ThrowCompletion
+from py262.value import Value, value
 
 from .declarative_environment import DeclarativeEnvironment
 
@@ -29,8 +29,7 @@ class FunctionEnvironment(DeclarativeEnvironment):
 
     def has_this_binding(self) -> Completion:
         return NormalCompletion(
-            value(self.this_binding_status != ThisBindingStatus.LEXICAL),
-        )
+            value(self.this_binding_status != ThisBindingStatus.LEXICAL), )
 
     def has_super_binding(self) -> Completion:
         if self.this_binding_status == ThisBindingStatus.LEXICAL:

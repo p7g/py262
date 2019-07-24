@@ -1,4 +1,3 @@
 from .schrodinger_property import *
 
-
-__all__ = ('schrodinger_property',)
+__all__ = ('schrodinger_property', )

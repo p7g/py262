@@ -32,6 +32,7 @@ def value(host_value) -> Value:
         return Value.false
     return Value.undefined
 
+
 def type_of(v: Value) -> str:
     if isinstance(v, BooleanValue):
         return 'boolean'

@@ -13,7 +13,8 @@ class CompletionType(enum.Enum):
 
 
 class Completion:
-    def __init__(self, type_: CompletionType, value: Optional[Value], target: Optional[Value]):
+    def __init__(self, type_: CompletionType, value: Optional[Value],
+                 target: Optional[Value]):
         self.type = type_
         self.value = value
         self.target = target
@@ -34,7 +35,8 @@ class ThrowCompletion(Completion):
 
 def update_empty(completion, value: Value) -> Completion:
     assert completion.value is not None if completion.type in [
-        CompletionType.RETURN, CompletionType.THROW,
+        CompletionType.RETURN,
+        CompletionType.THROW,
     ] else True
 
     if completion.value is not None:

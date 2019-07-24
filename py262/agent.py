@@ -4,6 +4,7 @@ This module defines the ECMAScript Agent class
 
 from py262.utils import schrodinger_property
 
+
 class Agent:
     '''https://ts39.es/ecma262/#sec-agents'''
 

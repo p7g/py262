@@ -1,7 +1,7 @@
 from typing import List
 
-from py262.value import Value, value
 from py262.completion import Completion, NormalCompletion, ThrowCompletion
+from py262.value import Value, value
 
 from .declarative_environment import DeclarativeEnvironment
 

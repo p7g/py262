@@ -1,5 +1,5 @@
-from py262.value import Value, value
 from py262.completion import Completion, NormalCompletion, ThrowCompletion
+from py262.value import Value, value
 
 
 class DeclarativeEnvironment:
@@ -34,7 +34,8 @@ class DeclarativeEnvironment:
         binding['initialized'] = True
         return NormalCompletion(None)
 
-    def set_mutable_binding(self, name, val: Value, strict: Value) -> Completion:
+    def set_mutable_binding(self, name, val: Value,
+                            strict: Value) -> Completion:
         if name not in self.bindings:
             if strict == Value.true:
                 return ThrowCompletion(value('new TypeError'))  # FIXME
