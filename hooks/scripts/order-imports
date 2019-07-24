@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+repo_root=$(git rev-parse --show-toplevel)
+
+python_files=$(find "$repo_root/py262" -type f -name '*.py')
+
+isort $python_files

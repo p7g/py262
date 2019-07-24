@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+
+repo_root=$(git rev-parse --show-toplevel)
+
+python_files=$(find "$repo_root/py262" -type f -name '*.py')
+
+1>/dev/null yapf --diff $python_files
+diff=$?
+
+if [ "$diff" -ne 0 ]; then
+  yapf --verbose --in-place $python_files
+  exit $diff
+fi

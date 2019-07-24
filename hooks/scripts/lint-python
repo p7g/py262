@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+
+repo_root=$(git rev-parse --show-toplevel)
+
+python_files=$(find "$repo_root/py262" -type f -name '*.py')
+
+pylint $python_files
+if [ "$?" -ne 0 ]; then
+  exit $?
+fi
+
+mypy "$repo_root/py262"
+if [ "$?" -ne 0 ]; then
+  exit $?
+fi
