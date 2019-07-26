@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+python -m unittest discover --start-directory "$AUTOHOOK_REPO_ROOT/tests" \
+    --top-level-directory "$AUTOHOOK_REPO_ROOT"
