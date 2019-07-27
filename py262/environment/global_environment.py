@@ -28,36 +28,38 @@ class GlobalEnvironment:
             return ThrowCompletion(value('new TypeError'))  # FIXME
         return self.declarative_record.create_immutable_binding(name, strict)
 
-    def initialize_binding(self, name, value: Value) -> Completion:
+    def initialize_binding(self, name, val: Value) -> Completion:
         if self.declarative_record.has_binding(name) is Value.true:
-            return self.declarative_record.initialize_binding(name, value)
+            return self.declarative_record.initialize_binding(name, val)
         assert 'binding must be in object environment if it exists'
-        return self.object_record.initialize_binding(name, value)
+        return self.object_record.initialize_binding(name, val)
 
-    def set_mutable_binding(self, name, value: Value) -> Completion:
+    def set_mutable_binding(self, name, val: Value,
+                            strict: Value) -> Completion:
         if self.declarative_record.has_binding(name) is Value.true:
-            return self.declarative_record.set_mutable_binding(name, value)
-        return self.object_record.set_mutable_binding(name, value)
+            return self.declarative_record.set_mutable_binding(
+                name, val, strict)
+        return self.object_record.set_mutable_binding(name, val, strict)
 
     def get_binding_value(self, name, strict: Value) -> Completion:
         if self.declarative_record.has_binding(name) is Value.true:
             return self.declarative_record.get_binding_value(name, strict)
         return self.object_record.get_binding_value(name, strict)
 
+    # https://tc39.es/ecma262/#sec-global-environment-records-deletebinding-n
     def delete_binding(self, name) -> Completion:
         if self.declarative_record.has_binding(name) is Value.true:
             return self.declarative_record.delete_binding(name)
-        raise NotImplementedError(
-        )  # https://tc39.es/ecma262/#sec-global-environment-records-deletebinding-n
+        raise NotImplementedError()
 
     def has_this_binding(self) -> Completion:
-        return Value.true
+        return NormalCompletion(Value.true)
 
     def has_super_binding(self) -> Completion:
-        return Value.false
+        return NormalCompletion(Value.false)
 
     def with_base_object(self) -> Completion:
-        return Value.undefined
+        return NormalCompletion(Value.undefined)
 
     def get_this_binding(self) -> Completion:
         return NormalCompletion(self.global_this_value)
@@ -84,7 +86,7 @@ class GlobalEnvironment:
         raise NotImplementedError(
         )  # https://tc39.es/ecma262/#sec-createglobalvarbinding
 
-    def create_global_function_binding(self, name, value: Value,
+    def create_global_function_binding(self, name, val: Value,
                                        deletable: Value) -> Completion:
         raise NotImplementedError(
         )  # https://tc39.es/ecma262/#sec-createglobalfunctionbinding
