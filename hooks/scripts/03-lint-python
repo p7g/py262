@@ -1,15 +1,20 @@
 #!/usr/bin/env sh
 
-repo_root=$(git rev-parse --show-toplevel)
-
-python_files=$(find "$repo_root/py262" -type f -name '*.py')
+if [ "$AUTOHOOK_STAGED_FILES" = '' ]; then
+  repo_root=$(git rev-parse --show-toplevel)
+  python_files=$(find "$repo_root/py262" -type f -name '*.py')
+else
+  python_files=$AUTOHOOK_STAGED_FILES
+fi
 
 pylint $python_files
-if [ "$?" -ne 0 ]; then
-  exit $?
+result=$?
+if [ "$result" -ne 0 ]; then
+  exit $result
 fi
 
 mypy "$repo_root/py262"
-if [ "$?" -ne 0 ]; then
-  exit $?
+result=$?
+if [ "$result" -ne 0 ]; then
+  exit $result
 fi

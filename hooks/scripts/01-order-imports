@@ -1,8 +1,11 @@
 #!/usr/bin/env sh
 
-repo_root=$(git rev-parse --show-toplevel)
-
-python_files=$(find "$repo_root/py262" -type f -name '*.py')
+if [ "$AUTOHOOK_STAGED_FILES" = '' ]; then
+    repo_root=$(git rev-parse --show-toplevel)
+    python_files=$(find "$repo_root/py262" -type f -name '*.py')
+else
+    python_files=$AUTOHOOK_STAGED_FILES
+fi
 
 isort --check -rc $python_files
 result=$?
