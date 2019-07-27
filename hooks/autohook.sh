@@ -121,7 +121,7 @@ run_symlinks() {
     script_files=()
     while IFS='' read -r script_file; do
         script_files+=("$script_file")
-    done < <(find "$1" \( -type f -o -type l \) -maxdepth 1)
+    done < <(find "$1" \( -type f -o -type l \) -maxdepth 1 | sort)
 
     hook_type=$2
     accumulator=$3
@@ -134,11 +134,11 @@ run_symlinks() {
         fi
     fi
     echo_verbose "Found $number_of_symlinks scripts"
+    scriptname=
     if [ "$number_of_symlinks" -gt 0 ]; then
         echo_debug '[run_symlinks] had symlinks, running scripts'
         hook_exit_code=0
-        for file in "${script_files[@]}"
-        do
+        for file in "${script_files[@]}"; do
             scriptname=$(basename "$file")
             echo_verbose "BEGIN $scriptname"
             echo_debug "[run_symlinks] running '$file' with staged files '$accumulator'"
@@ -148,13 +148,13 @@ run_symlinks() {
                 echo_debug "[run_symlinks] script exited with $script_exit_code"
                 hook_exit_code=$script_exit_code
             fi
+            if [ "$hook_exit_code" != 0 ]; then
+                echo_error "$hook_type script '$scriptname' yielded negative exit code $hook_exit_code"
+                printf_error "Result:\n%s\n" "$result"
+                exit $hook_exit_code
+            fi
             echo_verbose "FINISH $scriptname"
         done
-        if [ "$hook_exit_code" != 0 ]; then
-            echo_error "A $hook_type script yielded negative exit code $hook_exit_code"
-            printf_error "Result:\n%s\n" "$result"
-            exit $hook_exit_code
-        fi
     fi
 }
 
