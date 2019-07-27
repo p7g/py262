@@ -3,11 +3,12 @@ from typing import List
 from py262.completion import Completion, NormalCompletion, ThrowCompletion
 from py262.value import Value, value
 
+from .abstract_environment import AbstractEnvironment
 from .declarative_environment import DeclarativeEnvironment
 from .object_environment import ObjectEnvironment
 
 
-class GlobalEnvironment:
+class GlobalEnvironment(AbstractEnvironment):
     object_record: ObjectEnvironment
     global_this_value: Value
     declarative_record: DeclarativeEnvironment

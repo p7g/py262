@@ -2,8 +2,10 @@ from py262.completion import Completion, NormalCompletion
 from py262.utils.exceptions import Unreachable
 from py262.value import Value
 
+from .abstract_environment import AbstractEnvironment
 
-class ObjectEnvironment:
+
+class ObjectEnvironment(AbstractEnvironment):
     '''https://tc39.es/ecma262/#sec-object-environment-records'''
     binding_object: Value
     with_environment: bool

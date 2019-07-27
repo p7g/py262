@@ -1,8 +1,10 @@
 from py262.completion import Completion, NormalCompletion, ThrowCompletion
 from py262.value import Value, value
 
+from .abstract_environment import AbstractEnvironment
 
-class DeclarativeEnvironment:
+
+class DeclarativeEnvironment(AbstractEnvironment):
     def __init__(self):
         self.bindings = {}
 
