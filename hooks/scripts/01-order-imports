@@ -4,4 +4,10 @@ repo_root=$(git rev-parse --show-toplevel)
 
 python_files=$(find "$repo_root/py262" -type f -name '*.py')
 
-isort $python_files
+isort --check $python_files
+result=$?
+
+if [ "$?" -ne 0 ]; then
+    isort $python_files
+    exit $result
+fi
