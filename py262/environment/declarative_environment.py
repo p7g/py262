@@ -15,6 +15,7 @@ class DeclarativeEnvironment:
             'initialized': False,
             'mutable': True,
             'deletable': deletable is Value.true,
+            'strict': False,
         }
         return NormalCompletion(None)
 
