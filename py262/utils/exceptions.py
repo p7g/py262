@@ -1,0 +1,2 @@
+class Unreachable(RuntimeError):
+    pass

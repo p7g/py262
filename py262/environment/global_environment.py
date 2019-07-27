@@ -4,10 +4,11 @@ from py262.completion import Completion, NormalCompletion, ThrowCompletion
 from py262.value import Value, value
 
 from .declarative_environment import DeclarativeEnvironment
+from .object_environment import ObjectEnvironment
 
 
 class GlobalEnvironment:
-    # object_record: ObjectEnvironment  # TODO
+    object_record: ObjectEnvironment
     global_this_value: Value
     declarative_record: DeclarativeEnvironment
     var_names: List[str]
