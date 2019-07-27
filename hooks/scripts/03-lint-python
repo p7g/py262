@@ -7,7 +7,7 @@ else
   python_files=$AUTOHOOK_STAGED_FILES
 fi
 
-pylint $python_files
+pylama $python_files
 result=$?
 if [ "$result" -ne 0 ]; then
   exit $result
