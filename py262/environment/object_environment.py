@@ -1,6 +1,6 @@
-from py262.value import Value
 from py262.completion import Completion, NormalCompletion
 from py262.utils.exceptions import Unreachable
+from py262.value import Value
 
 
 class ObjectEnvironment:
