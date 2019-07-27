@@ -1,5 +1,6 @@
 from typing import Union
 
+import py262.environment
 
 PRIMITIVE_TYPES = ('string', 'number', 'null', 'undefined', 'symbol')  # TODO
 
@@ -42,15 +43,13 @@ def value(host_value) -> Value:
     return Value.undefined
 
 
-def type_of(v: Union[Value, 'AbstractEnvironment']) -> str:
-    from py262.environment import AbstractEnvironment
-
+def type_of(v: Union[Value, 'py262.environment.AbstractEnvironment']) -> str:
     if isinstance(v, BooleanValue):
         return 'boolean'
     if isinstance(v, NullValue):
         return 'null'
     if isinstance(v, UndefinedValue):
         return 'undefined'
-    if isinstance(v, AbstractEnvironment):
+    if isinstance(v, py262.environment.AbstractEnvironment):
         return 'environment'
     raise NotImplementedError()
