@@ -1,6 +1,6 @@
 from typing import Union
 
-from py262.completion import Completion, NormalCompletion
+from py262.completion import Completion
 from py262.reference import Reference
 from py262.value import Value, type_of
 
@@ -12,12 +12,12 @@ from .object_environment import ObjectEnvironment
 
 
 def get_identifier_reference(lex: Union[Value, LexicalEnvironment],
-                             name: Value, strict: Value) -> Completion:
+                             name: Value,
+                             strict: Value) -> Union[Completion, Reference]:
     if lex is Value.null:
-        return NormalCompletion(
-            Reference(base=Value.undefined,
-                      referenced_name=name,
-                      is_strict=strict))
+        return Reference(base=Value.undefined,
+                         referenced_name=name,
+                         is_strict=strict)
     assert isinstance(
         lex, LexicalEnvironment)  # FIXME: is this assumption accurate?
     exists_completion = lex.environment_record.has_binding(name)
@@ -25,10 +25,9 @@ def get_identifier_reference(lex: Union[Value, LexicalEnvironment],
         return exists_completion
     exists = exists_completion.value
     if exists is Value.true:
-        return NormalCompletion(
-            Reference(base=lex.environment_record,
-                      referenced_name=name,
-                      is_strict=strict))
+        return Reference(base=lex.environment_record,
+                         referenced_name=name,
+                         is_strict=strict)
     return get_identifier_reference(lex.outer_lexical_environment, name,
                                     strict)
 
