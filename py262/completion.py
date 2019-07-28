@@ -1,6 +1,7 @@
 import enum
-from typing import Optional
+from typing import Optional, Union
 
+from py262.reference import Reference
 from py262.value import Value
 
 
@@ -13,7 +14,12 @@ class CompletionType(enum.Enum):
 
 
 class Completion:
-    def __init__(self, type_: CompletionType, value: Optional[Value],
+    type: CompletionType
+    value: Optional[Union[Value, Reference]]
+    target: Optional[Value]
+
+    def __init__(self, type_: CompletionType,
+                 value: Optional[Union[Value, Reference]],
                  target: Optional[Value]):
         self.type = type_
         self.value = value
@@ -24,12 +30,12 @@ class Completion:
 
 
 class NormalCompletion(Completion):
-    def __init__(self, value: Optional[Value]):
+    def __init__(self, value: Optional[Union[Value, Reference]]):
         super().__init__(CompletionType.NORMAL, value, None)
 
 
 class ThrowCompletion(Completion):
-    def __init__(self, value: Optional[Value]):
+    def __init__(self, value: Optional[Union[Value, Reference]]):
         super().__init__(CompletionType.THROW, value, None)
 
 
