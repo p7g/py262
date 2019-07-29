@@ -42,10 +42,13 @@ class Agent:
         return self._signifier
 
 
-surrounding_agent = None
+class SurroundingAgent:
+    __instance = None
 
+    @classmethod
+    def get(cls):
+        return cls.__instance
 
-def set_surrounding_agent(agent):
-    '''Set the surrounding agent to a different agent'''
-    global surrounding_agent  # pylint: disable=global-statement
-    surrounding_agent = agent
+    @classmethod
+    def set(cls, agent: Agent):
+        cls.__instance = agent
