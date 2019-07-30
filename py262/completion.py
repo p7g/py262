@@ -1,5 +1,5 @@
 import enum
-from typing import Optional
+from typing import Generic, Optional, TypeVar
 
 from py262.value import Value
 
@@ -12,12 +12,15 @@ class CompletionType(enum.Enum):
     THROW = 'throw'
 
 
-class Completion:
+T = TypeVar('T')
+
+
+class Completion(Generic[T]):
     type: CompletionType
-    value: Optional[Value]
+    value: Optional[T]
     target: Optional[Value]
 
-    def __init__(self, type_: CompletionType, value: Optional[Value],
+    def __init__(self, type_: CompletionType, value: Optional[T],
                  target: Optional[Value]):
         self.type = type_
         self.value = value
@@ -27,11 +30,11 @@ class Completion:
         return self.type != CompletionType.NORMAL
 
 
-class NormalCompletion(Completion):
-    def __init__(self, value: Optional[Value]):
+class NormalCompletion(Completion[T]):
+    def __init__(self, value: Optional[T]):
         super().__init__(CompletionType.NORMAL, value, None)
 
 
-class ThrowCompletion(Completion):
+class ThrowCompletion(Completion[Value]):
     def __init__(self, value: Optional[Value]):
         super().__init__(CompletionType.THROW, value, None)
