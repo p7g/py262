@@ -1,17 +1,15 @@
-from typing import Union
-
-from py262 import environment
-
 PRIMITIVE_TYPES = ('string', 'number', 'null', 'undefined', 'symbol')  # TODO
 
 
 class Value:
-    true: 'Value'
-    false: 'Value'
-    null: 'Value'
-    undefined: 'Value'
+    true: 'BooleanValue'
+    false: 'BooleanValue'
+    null: 'NullValue'
+    undefined: 'UndefinedValue'
 
     def is_primitive(self) -> bool:
+        from py262.abstract_ops.value import type_of
+
         return type_of(self) in PRIMITIVE_TYPES
 
 
@@ -41,15 +39,3 @@ def value(host_value) -> Value:
             return Value.true
         return Value.false
     return Value.undefined
-
-
-def type_of(v: Union[Value, 'environment.AbstractEnvironment']) -> str:
-    if isinstance(v, BooleanValue):
-        return 'boolean'
-    if isinstance(v, NullValue):
-        return 'null'
-    if isinstance(v, UndefinedValue):
-        return 'undefined'
-    if isinstance(v, environment.AbstractEnvironment):
-        return 'environment'
-    raise NotImplementedError()

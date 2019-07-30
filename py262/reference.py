@@ -1,7 +1,8 @@
 from typing import Union
 
 from py262 import environment
-from py262.value import Value, type_of
+from py262.abstract_ops.value import type_of
+from py262.value import Value
 
 VALID_BASE_TYPES = ('undefined', 'object', 'boolean', 'string', 'symbol',
                     'number')

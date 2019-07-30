@@ -1,9 +1,10 @@
 from typing import Union
 
+from py262.abstract_ops.value import type_of
 from py262.completion import Completion, NormalCompletion, ThrowCompletion
 from py262.environment import AbstractEnvironment
 from py262.reference import Reference, SuperReference
-from py262.value import Value, type_of, value
+from py262.value import Value, value
 
 
 def get_base(ref: Reference) -> Union[Value, AbstractEnvironment]:

@@ -35,14 +35,3 @@ class NormalCompletion(Completion):
 class ThrowCompletion(Completion):
     def __init__(self, value: Optional[Value]):
         super().__init__(CompletionType.THROW, value, None)
-
-
-def update_empty(completion, value: Value) -> Completion:
-    assert completion.value is not None if completion.type in [
-        CompletionType.RETURN,
-        CompletionType.THROW,
-    ] else True
-
-    if completion.value is not None:
-        return completion
-    return Completion(completion.type, value, completion.target)

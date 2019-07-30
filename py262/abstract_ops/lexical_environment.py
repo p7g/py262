@@ -1,14 +1,12 @@
 from typing import Union
 
+from py262.abstract_ops.value import type_of
 from py262.completion import Completion
+from py262.environment import (DeclarativeEnvironment, FunctionEnvironment,
+                               GlobalEnvironment, LexicalEnvironment,
+                               ObjectEnvironment)
 from py262.reference import Reference
-from py262.value import Value, type_of
-
-from .declarative_environment import DeclarativeEnvironment
-from .function_environment import FunctionEnvironment
-from .global_environment import GlobalEnvironment
-from .lexical_environment import LexicalEnvironment
-from .object_environment import ObjectEnvironment
+from py262.value import Value
 
 
 def get_identifier_reference(lex: Union[Value, LexicalEnvironment],
