@@ -1,4 +1,13 @@
+from dataclasses import dataclass
+from typing import TypeVar, Union
+
+from py262.completion import NormalCompletion, ThrowCompletion
+
 PRIMITIVE_TYPES = ('string', 'number', 'null', 'undefined', 'symbol')  # TODO
+
+T = TypeVar('T')
+
+MaybeThrow = Union[NormalCompletion[T], ThrowCompletion]
 
 
 class Value:
@@ -25,6 +34,39 @@ class NullValue(Value):
 
 class UndefinedValue(Value):
     pass
+
+
+@dataclass
+class Property:
+    enumerable: BooleanValue = Value.false
+    configurable: BooleanValue = Value.false
+
+
+@dataclass
+class DataProperty(Property):
+    value: Value = Value.undefined
+    writable: BooleanValue = Value.false
+
+
+@dataclass
+class AccessorProperty(Property):
+    get: Union['ObjectValue', UndefinedValue] = Value.undefined
+    set: Union['ObjectValue', UndefinedValue] = Value.undefined
+
+
+class ObjectValue(Value):
+    def get_prototype_of(self) -> MaybeThrow[Union[NullValue, 'ObjectValue']]:
+        pass
+
+    def set_prototype_of(self, proto: Union[NullValue, 'ObjectValue']
+                         ) -> MaybeThrow[BooleanValue]:
+        pass
+
+    def is_extensible(self) -> MaybeThrow[BooleanValue]:
+        pass
+
+    def prevent_extensions(self) -> MaybeThrow[BooleanValue]:
+        pass
 
 
 Value.true = BooleanValue(True)
