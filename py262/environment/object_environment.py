@@ -1,4 +1,4 @@
-from py262.completion import Completion, NormalCompletion
+from py262.completion import NormalCompletion
 from py262.utils.exceptions import Unreachable
 from py262.value import Value
 
@@ -10,35 +10,34 @@ class ObjectEnvironment(AbstractEnvironment):
     binding_object: Value
     with_environment: bool
 
-    def has_binding(self, name) -> Completion:
+    def has_binding(self, name):
         raise NotImplementedError()
 
-    def create_mutable_binding(self, name, deletable: Value) -> Completion:
+    def create_mutable_binding(self, name, deletable):
         raise NotImplementedError()
 
-    def create_immutable_binding(self, name, strict: Value) -> Completion:
+    def create_immutable_binding(self, name, strict):
         raise Unreachable()
 
-    def initialize_binding(self, name, value: Value) -> Completion:
+    def initialize_binding(self, name, value):
         raise NotImplementedError()
 
-    def set_mutable_binding(self, name, value: Value,
-                            strict: Value) -> Completion:
+    def set_mutable_binding(self, name, value, strict):
         raise NotImplementedError()
 
-    def get_binding_value(self, name, strict: Value) -> Completion:
+    def get_binding_value(self, name, strict):
         raise NotImplementedError()
 
-    def delete_binding(self, name) -> Completion:
+    def delete_binding(self, name):
         raise NotImplementedError()
 
-    def has_this_binding(self) -> Completion:
+    def has_this_binding(self):
         return NormalCompletion(Value.false)
 
-    def has_super_binding(self) -> Completion:
+    def has_super_binding(self):
         return NormalCompletion(Value.false)
 
-    def with_base_object(self) -> Completion:
+    def with_base_object(self):
         if self.with_environment:
             return NormalCompletion(self.binding_object)
         return NormalCompletion(Value.undefined)

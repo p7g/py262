@@ -1,6 +1,6 @@
 import enum
 
-from py262.completion import Completion, NormalCompletion, ThrowCompletion
+from py262.completion import NormalCompletion, ThrowCompletion
 from py262.value import Value, value
 
 from .declarative_environment import DeclarativeEnvironment
@@ -19,7 +19,7 @@ class FunctionEnvironment(DeclarativeEnvironment):
     home_object: Value
     new_target: Value
 
-    def bind_this_value(self, val: Value) -> Completion:
+    def bind_this_value(self, val):
         assert self.this_binding_status != ThisBindingStatus.LEXICAL
         if self.this_binding_status == ThisBindingStatus.INITIALIZED:
             return ThrowCompletion(value('new ReferenceError'))  # FIXME
@@ -27,23 +27,23 @@ class FunctionEnvironment(DeclarativeEnvironment):
         self.this_binding_status = ThisBindingStatus.INITIALIZED
         return NormalCompletion(val)
 
-    def has_this_binding(self) -> Completion:
+    def has_this_binding(self):
         return NormalCompletion(
             value(self.this_binding_status != ThisBindingStatus.LEXICAL), )
 
-    def has_super_binding(self) -> Completion:
+    def has_super_binding(self):
         if self.this_binding_status == ThisBindingStatus.LEXICAL:
             return NormalCompletion(Value.false)
         return NormalCompletion(value(self.home_object is not Value.undefined))
 
-    def get_this_binding(self) -> Completion:
+    def get_this_binding(self):
         assert self.this_binding_status != ThisBindingStatus.LEXICAL
         if self.this_binding_status == ThisBindingStatus.UNINITIALIZED:
             return ThrowCompletion(value('new ReferenceError'))  # FIXME
         return NormalCompletion(self.this_value)
 
     # TODO
-    # def get_super_base(self) -> Completion:
+    # def get_super_base(self):
     #     if self.home_object is Value.undefined:
     #         return NormalCompletion(Value.undefined)
     #     assert type_of(self.home_object) == 'object'

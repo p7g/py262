@@ -1,8 +1,7 @@
 from py262.completion import Completion, CompletionType
-from py262.value import Value
 
 
-def update_empty(completion: Completion, value: Value) -> Completion:
+def update_empty(completion, value):
     assert completion.value is not None if completion.type in [
         CompletionType.RETURN,
         CompletionType.THROW,

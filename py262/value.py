@@ -1,20 +1,31 @@
 from dataclasses import dataclass
-from typing import TypeVar, Union
+from typing import Union
 
-from py262.completion import NormalCompletion, ThrowCompletion
+from py262.utils import classproperty, singleton
 
 PRIMITIVE_TYPES = ('string', 'number', 'null', 'undefined', 'symbol')  # TODO
 
-T = TypeVar('T')
-
-MaybeThrow = Union[NormalCompletion[T], ThrowCompletion]
-
 
 class Value:
-    true: 'BooleanValue'
-    false: 'BooleanValue'
-    null: 'NullValue'
-    undefined: 'UndefinedValue'
+    @classproperty
+    @singleton
+    def true(cls):
+        return BooleanValue(True)
+
+    @classproperty
+    @singleton
+    def false(cls):
+        return BooleanValue(False)
+
+    @classproperty
+    @singleton
+    def null(cls):
+        return NullValue()
+
+    @classproperty
+    @singleton
+    def undefined(cls):
+        return UndefinedValue()
 
     def is_primitive(self) -> bool:
         from py262.abstract_ops.value import type_of
@@ -55,24 +66,17 @@ class AccessorProperty(Property):
 
 
 class ObjectValue(Value):
-    def get_prototype_of(self) -> MaybeThrow[Union[NullValue, 'ObjectValue']]:
+    def get_prototype_of(self):
         pass
 
-    def set_prototype_of(self, proto: Union[NullValue, 'ObjectValue']
-                         ) -> MaybeThrow[BooleanValue]:
+    def set_prototype_of(self, proto):
         pass
 
-    def is_extensible(self) -> MaybeThrow[BooleanValue]:
+    def is_extensible(self):
         pass
 
-    def prevent_extensions(self) -> MaybeThrow[BooleanValue]:
+    def prevent_extensions(self):
         pass
-
-
-Value.true = BooleanValue(True)
-Value.false = BooleanValue(False)
-Value.null = NullValue()
-Value.undefined = UndefinedValue()
 
 
 def value(host_value) -> Value:

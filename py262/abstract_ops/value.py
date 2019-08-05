@@ -1,10 +1,8 @@
-from typing import Union
-
 from py262.environment import AbstractEnvironment
-from py262.value import BooleanValue, NullValue, UndefinedValue, Value
+from py262.value import BooleanValue, NullValue, UndefinedValue
 
 
-def type_of(v: Union[Value, AbstractEnvironment]) -> str:
+def type_of(v):
     if isinstance(v, BooleanValue):
         return 'boolean'
     if isinstance(v, NullValue):
