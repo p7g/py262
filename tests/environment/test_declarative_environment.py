@@ -19,7 +19,8 @@ class TestDeclarativeEnvironment(TestCase):
         self.assertNormalCompletion(
             self.env.initialize_binding('testBinding', Value.null))
         self.assertNormalCompletion(
-            self.env.set_mutable_binding('testBinding', Value.true, Value.true))
+            self.env.set_mutable_binding('testBinding', Value.true,
+                                         Value.true))
         value = self.assertNormalCompletion(
             self.env.get_binding_value('testBinding', Value.false))
         self.assertIs(value, Value.true)
@@ -62,8 +63,9 @@ class TestDeclarativeEnvironment(TestCase):
                       self.assertNormalCompletion(self.env.has_this_binding()))
 
     def test_has_super_binding(self):
-        self.assertIs(Value.false,
-                      self.assertNormalCompletion(self.env.has_super_binding()))
+        self.assertIs(
+            Value.false,
+            self.assertNormalCompletion(self.env.has_super_binding()))
 
     def test_with_base_object(self):
         self.assertIs(Value.undefined,
