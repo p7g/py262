@@ -25,7 +25,7 @@ install() {
     autohook_linktarget="../../.hooks/autohook.sh"
     for hook_type in "${hook_types[@]}"; do
         hook_symlink="$hooks_dir/$hook_type"
-        if [ ! -f "$hook_symlink" ]; then
+        if [ ! -e "$hook_symlink" ]; then
             ln -s "$autohook_linktarget" "$hook_symlink"
             echo_debug "[install] linked '$autohook_linktarget' to '$hook_symlink'"
         else
@@ -74,6 +74,7 @@ run_symlinks() {
         return
     fi
 
+    echo_debug "[run_symlinks] making temp fifo dir"
     autohook_fifo_dir=$(mktemp -d "${TMPDIR:-.}/autohook_fifo_XXXX") || {
         echo_error '[run_symlinks] failed to create temp fifo dir'
         return 1
@@ -83,15 +84,16 @@ run_symlinks() {
     if ! mkfifo "$autohook_stdout" || ! mkfifo "$autohook_stderr"; then
         echo_error '[run_symlinks] failed to create temp stderr or stdout fifo'
         rm "$autohook_stdout" "$autohook_stderr"
+        rmdir "$autohook_fifo_dir"
         return 1
     fi
-    tail -f -n +1 "$autohook_stdout" > /dev/stdout &
-    tail -f -n +1 "$autohook_stderr" > /dev/stderr &
+    tail -f -n +1 "$autohook_stdout" >&1 &
+    tail -f -n +1 "$autohook_stderr" >&2 &
 
     script_files=()
     while IFS='' read -r script_file; do
         script_files+=("$script_file")
-    done < <(find "$1" \( -type f -o -type l \) -maxdepth 1 | sort)
+    done < <(find "$1" -maxdepth 1 \( -type f -o -type l \) | sort)
 
     hook_type=$2
     accumulator=$3
@@ -128,11 +130,12 @@ run_symlinks() {
             fi
             echo_verbose "FINISH $file"
         done
-        rm -rf "$autohook_fifo_dir"
+
         if [ "$hook_exit_code" -ne 0 ]; then
             exit 1
         fi
     fi
+    rm -rf "$autohook_fifo_dir"
 }
 
 run_hook() {
