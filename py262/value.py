@@ -42,7 +42,7 @@ class Value:
 
 
 class BooleanValue(Value):
-    def __init__(self, inner_value):
+    def __init__(self, inner_value: bool):
         assert isinstance(inner_value, bool)
         self.inner_value = inner_value
 
@@ -105,3 +105,4 @@ def value(host_value=UNDEFINED) -> Value:
         return Value.null
     if host_value is UNDEFINED:
         return Value.undefined
+    raise ValueError(host_value)
