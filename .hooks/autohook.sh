@@ -9,6 +9,9 @@ echo_debug() { if [ "$AUTOHOOK_DEBUG" != '' ]; then >&2 echo "[DEBUG] $*"; fi; }
 repo_root() { git rev-parse --show-toplevel; }
 hooks_dir() { builtin echo "$(repo_root)/.hooks"; }
 
+AUTOHOOK_DEBUG=1
+AUTOHOOK_VERBOSE=1
+
 hook_types=(
     "applypatch-msg" "commit-msg" "post-applypatch" "post-checkout"
     "post-commit" "post-merge" "post-receive" "post-rewrite"

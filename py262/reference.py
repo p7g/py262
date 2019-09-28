@@ -1,8 +1,10 @@
-from typing import Union
+from typing import TYPE_CHECKING, Union
 
-from py262 import environment
 from py262.abstract_ops.value import type_of
-from py262.value import Value
+from py262.environment import AbstractEnvironment
+
+if TYPE_CHECKING:
+    from py262.value import Value
 
 VALID_BASE_TYPES = ('undefined', 'object', 'boolean', 'string', 'symbol',
                     'number')
@@ -10,14 +12,14 @@ VALID_REFERENCED_NAME_TYPES = ('string', 'symbol')
 
 
 class Reference:
-    base: Union[Value, 'environment.AbstractEnvironment']
+    base: Union[Value, AbstractEnvironment]
     referenced_name: Value
     is_strict: Value
 
-    def __init__(self, base: Union[Value, 'environment.AbstractEnvironment'],
+    def __init__(self, base: Union[Value, AbstractEnvironment],
                  referenced_name: Value, is_strict: Value):
         assert type_of(base) in VALID_BASE_TYPES \
-            or isinstance(base, environment.AbstractEnvironment)
+            or isinstance(base, AbstractEnvironment)
         assert type_of(referenced_name) in VALID_REFERENCED_NAME_TYPES
         assert type_of(is_strict) == 'boolean'
 

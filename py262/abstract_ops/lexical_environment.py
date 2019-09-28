@@ -1,4 +1,7 @@
+from typing import Union
+
 from py262.abstract_ops.value import type_of
+from py262.completion import Completion
 from py262.environment import (DeclarativeEnvironment, FunctionEnvironment,
                                GlobalEnvironment, LexicalEnvironment,
                                ObjectEnvironment)
@@ -6,7 +9,9 @@ from py262.reference import Reference
 from py262.value import Value
 
 
-def get_identifier_reference(lex, name, strict):
+def get_identifier_reference(lex: Union[Value, LexicalEnvironment],
+                             name: Value,
+                             strict: Value) -> Union[Completion, Reference]:
     if lex is Value.null:
         return Reference(base=Value.undefined,
                          referenced_name=name,
@@ -25,7 +30,8 @@ def get_identifier_reference(lex, name, strict):
                                     strict)
 
 
-def new_declarative_environment(outer_env):
+def new_declarative_environment(outer_env: LexicalEnvironment
+                                ) -> LexicalEnvironment:
     env = LexicalEnvironment()
     env_rec = DeclarativeEnvironment()
     env.environment_record = env_rec
@@ -33,7 +39,8 @@ def new_declarative_environment(outer_env):
     return env
 
 
-def new_object_environment(obj, outer_env):
+def new_object_environment(obj: Value, outer_env: LexicalEnvironment
+                           ) -> LexicalEnvironment:
     env = LexicalEnvironment()
     env_rec = ObjectEnvironment()
     env_rec.binding_object = obj
@@ -42,7 +49,8 @@ def new_object_environment(obj, outer_env):
     return env
 
 
-def new_function_environment(fn, new_target):
+def new_function_environment(fn: Value,
+                             new_target: Value) -> LexicalEnvironment:
     assert type_of(fn) == 'function'
     assert type_of(new_target) in ('undefined', 'object')
     env = LexicalEnvironment()
@@ -53,7 +61,7 @@ def new_function_environment(fn, new_target):
     return env
 
 
-def new_global_environmetn(g, this_value):
+def new_global_environmetn(g: Value, this_value: Value) -> LexicalEnvironment:
     env = LexicalEnvironment()
     obj_rec = ObjectEnvironment()
     obj_rec.binding_object = g
@@ -68,6 +76,6 @@ def new_global_environmetn(g, this_value):
     return env
 
 
-def new_module_environment(env):
+def new_module_environment(env: LexicalEnvironment) -> LexicalEnvironment:
     # https://tc39.es/ecma262/#sec-newmoduleenvironment
     raise NotImplementedError()

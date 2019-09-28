@@ -1,17 +1,22 @@
+from typing import TYPE_CHECKING
+
 from py262.completion import NormalCompletion, ThrowCompletion
 from py262.value import Value, value
 
 from .abstract_environment import AbstractEnvironment
+
+if TYPE_CHECKING:
+    from py262.completion import Completion
 
 
 class DeclarativeEnvironment(AbstractEnvironment):
     def __init__(self):
         self.bindings = {}
 
-    def has_binding(self, name):
+    def has_binding(self, name) -> 'Completion':
         return NormalCompletion(value(name in self.bindings))
 
-    def create_mutable_binding(self, name, deletable):
+    def create_mutable_binding(self, name, deletable: Value) -> 'Completion':
         assert name not in self.bindings
         self.bindings[name] = {
             'initialized': False,
@@ -21,7 +26,7 @@ class DeclarativeEnvironment(AbstractEnvironment):
         }
         return NormalCompletion(None)
 
-    def create_immutable_binding(self, name, strict):
+    def create_immutable_binding(self, name, strict: Value) -> 'Completion':
         self.bindings[name] = {
             'initialized': False,
             'mutable': False,
@@ -30,14 +35,15 @@ class DeclarativeEnvironment(AbstractEnvironment):
         }
         return NormalCompletion(None)
 
-    def initialize_binding(self, name, val):
+    def initialize_binding(self, name, val: Value) -> 'Completion':
         assert name in self.bindings and not self.bindings[name]['initialized']
         binding = self.bindings[name]
         binding['value'] = val
         binding['initialized'] = True
         return NormalCompletion(None)
 
-    def set_mutable_binding(self, name, val, strict):
+    def set_mutable_binding(self, name, val: Value,
+                            strict: Value) -> 'Completion':
         if name not in self.bindings:
             if strict == Value.true:
                 return ThrowCompletion(value('new TypeError'))  # FIXME
@@ -56,24 +62,24 @@ class DeclarativeEnvironment(AbstractEnvironment):
                 return ThrowCompletion(value('new TypeError'))  # FIXME
         return NormalCompletion(None)
 
-    def get_binding_value(self, name, _s):
+    def get_binding_value(self, name, _s: Value) -> 'Completion':
         assert name in self.bindings
         if not self.bindings[name]['initialized']:
             return ThrowCompletion(value('new ReferenceError'))  # FIXME
         return NormalCompletion(self.bindings[name]['value'])
 
-    def delete_binding(self, name):
+    def delete_binding(self, name) -> 'Completion':
         assert name in self.bindings
         if not self.bindings[name]['deletable']:
             return NormalCompletion(Value.false)
         del self.bindings[name]
         return NormalCompletion(Value.true)
 
-    def has_this_binding(self):
+    def has_this_binding(self) -> 'Completion':
         return NormalCompletion(Value.false)
 
-    def has_super_binding(self):
+    def has_super_binding(self) -> 'Completion':
         return NormalCompletion(Value.false)
 
-    def with_base_object(self):
+    def with_base_object(self) -> 'Completion':
         return NormalCompletion(Value.undefined)

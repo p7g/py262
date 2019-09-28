@@ -1,42 +1,47 @@
+from typing import TYPE_CHECKING, Union
+
 from py262.abstract_ops.value import type_of
 from py262.completion import NormalCompletion, ThrowCompletion
 from py262.environment import AbstractEnvironment
 from py262.reference import Reference, SuperReference
 from py262.value import Value, value
 
+if TYPE_CHECKING:
+    from py262.completion import Completion
 
-def get_base(ref):
+
+def get_base(ref: Reference) -> Union[Value, AbstractEnvironment]:
     return ref.base
 
 
-def get_referenced_name(ref):
+def get_referenced_name(ref: Reference) -> Value:
     return ref.referenced_name
 
 
-def is_strict_reference(ref):
+def is_strict_reference(ref: Reference) -> Value:
     return ref.is_strict
 
 
-def has_primitive_base(ref):
+def has_primitive_base(ref: Reference) -> Value:
     return value(isinstance(ref.base, Value) and ref.base.is_primitive())
 
 
-def is_property_reference(ref):
+def is_property_reference(ref: Reference) -> Completion:
     return NormalCompletion(
         value(
             type_of(ref.base) == 'object'
             or has_primitive_base(ref) is Value.true))
 
 
-def is_unresolvable_reference(ref):
+def is_unresolvable_reference(ref: Reference) -> Value:
     return value(ref.base is Value.undefined)
 
 
-def is_super_reference(ref):
+def is_super_reference(ref: Reference) -> Value:
     return value(isinstance(ref, SuperReference))
 
 
-def get_value(v_completion):
+def get_value(v_completion: Completion) -> Completion:
     if v_completion.is_abrupt():
         return v_completion
     v = v_completion.value
@@ -59,7 +64,8 @@ def get_value(v_completion):
                                   is_strict_reference(v))
 
 
-def put_value(v_completion, w_completion):
+def put_value(v_completion: Completion,
+              w_completion: Completion) -> Completion:
     if v_completion.is_abrupt():
         return v_completion
     v = v_completion.value
@@ -89,7 +95,7 @@ def put_value(v_completion, w_completion):
                                     is_strict_reference(v))
 
 
-def get_this_value(v):
+def get_this_value(v: Reference) -> Value:
     assert is_property_reference(v) is Value.true
     if isinstance(v, SuperReference):
         return v.this_value
@@ -98,7 +104,8 @@ def get_this_value(v):
     return base
 
 
-def initialize_referenced_binding(v_completion, w_completion):
+def initialize_referenced_binding(v_completion: Completion,
+                                  w_completion: Completion) -> Completion:
     if v_completion.is_abrupt():
         return v_completion
     v = v_completion.value
