@@ -55,6 +55,12 @@ class UndefinedValue(Value):
     pass
 
 
+class StringValue(Value):
+    def __init__(self, inner_value: str):
+        assert isinstance(inner_value, str)
+        self.inner_value = inner_value
+
+
 @dataclass
 class Property:
     enumerable: BooleanValue = Value.false
@@ -93,6 +99,8 @@ def value(host_value=UNDEFINED) -> Value:
         if host_value:
             return Value.true
         return Value.false
+    if isinstance(host_value, str):
+        return StringValue(host_value)
     if host_value is None:
         return Value.null
     if host_value is UNDEFINED:
