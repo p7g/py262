@@ -23,11 +23,11 @@ class TestValue(TestCase):
         self.assertIs(Value.undefined, Value.undefined)
 
     def test_is_primitive(self):
-        self.assertTrue(Value.is_primitive(Value.true))
-        self.assertTrue(Value.is_primitive(Value.false))
-        self.assertTrue(Value.is_primitive(Value.null))
-        self.assertTrue(Value.is_primitive(Value.undefined))
-        self.assertFalse(Value.is_primitive(ObjectValue()))
+        self.assertTrue(Value.true.is_primitive())
+        self.assertTrue(Value.false.is_primitive())
+        self.assertTrue(Value.null.is_primitive())
+        self.assertTrue(Value.undefined.is_primitive())
+        self.assertFalse(ObjectValue().is_primitive())
 
     def test_value(self):
         self.assertIs(value(True), Value.true)
