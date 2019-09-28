@@ -3,7 +3,7 @@
 repo_root=$(git rev-parse --show-toplevel)
 
 if [ "$AUTOHOOK_STAGED_FILES" = '' ]; then
-    python_files=$(find "$repo_root/py262" -type f -name '*.py')
+    python_files=$(find "$repo_root/py262" "$repo_root/tests" -type f -name '*.py')
 else
     python_files=$AUTOHOOK_STAGED_FILES
 fi
