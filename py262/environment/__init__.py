@@ -1,15 +1,15 @@
-from .abstract_environment import AbstractEnvironment
-from .declarative_environment import DeclarativeEnvironment
-from .function_environment import FunctionEnvironment
-from .global_environment import GlobalEnvironment
+from .abstract_environment_record import AbstractEnvironmentRecord
+from .declarative_environment_record import DeclarativeEnvironmentRecord
+from .function_environment_record import FunctionEnvironmentRecord
+from .global_environment_record import GlobalEnvironmentRecord
 from .lexical_environment import LexicalEnvironment
-from .object_environment import ObjectEnvironment
+from .object_environment_record import ObjectEnvironmentRecord
 
 __all__ = (
-    'AbstractEnvironment',
-    'DeclarativeEnvironment',
-    'FunctionEnvironment',
-    'GlobalEnvironment',
+    'AbstractEnvironmentRecord',
+    'DeclarativeEnvironmentRecord',
+    'GlobalEnvironmentRecord',
+    'ObjectEnvironmentRecord',
+    'FunctionEnvironmentRecord',
     'LexicalEnvironment',
-    'ObjectEnvironment',
 )

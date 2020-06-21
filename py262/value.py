@@ -60,6 +60,9 @@ class StringValue(Value):
         assert isinstance(inner_value, str)
         self.inner_value = inner_value
 
+    def __hash__(self):
+        return hash(self.inner_value)
+
 
 @dataclass
 class Property:

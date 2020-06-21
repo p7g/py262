@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 from py262.completion import NormalCompletion, ThrowCompletion
 from py262.value import Value, value
 
-from .declarative_environment import DeclarativeEnvironment
+from .declarative_environment_record import DeclarativeEnvironmentRecord
 
 if TYPE_CHECKING:
     from py262.completion import Completion
@@ -16,7 +16,7 @@ class ThisBindingStatus(enum.Enum):
     UNINITIALIZED = 'uninitialized'
 
 
-class FunctionEnvironment(DeclarativeEnvironment):
+class FunctionEnvironmentRecord(DeclarativeEnvironmentRecord):
     this_value: Value
     this_binding_status: ThisBindingStatus
     function_object: Value
@@ -33,7 +33,7 @@ class FunctionEnvironment(DeclarativeEnvironment):
 
     def has_this_binding(self) -> 'Completion':
         return NormalCompletion(
-            value(self.this_binding_status != ThisBindingStatus.LEXICAL), )
+            value(self.this_binding_status != ThisBindingStatus.LEXICAL))
 
     def has_super_binding(self) -> 'Completion':
         if self.this_binding_status == ThisBindingStatus.LEXICAL:
@@ -46,7 +46,7 @@ class FunctionEnvironment(DeclarativeEnvironment):
             return ThrowCompletion(value('new ReferenceError'))  # FIXME
         return NormalCompletion(self.this_value)
 
-    # TODO
+    # FIXME
     # def get_super_base(self) -> 'Completion':
     #     if self.home_object is Value.undefined:
     #         return NormalCompletion(Value.undefined)

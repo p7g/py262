@@ -1,11 +1,11 @@
-from py262.environment import DeclarativeEnvironment
+from py262.environment import DeclarativeEnvironmentRecord
 from py262.value import Value
 from tests.testutils import TestCase
 
 
 class TestDeclarativeEnvironment(TestCase):
     def setUp(self):
-        self.env = DeclarativeEnvironment()
+        self.env = DeclarativeEnvironmentRecord()
 
     def test_has_binding(self):
         self.assertNormalCompletion(

@@ -6,34 +6,38 @@ if TYPE_CHECKING:
     from py262.value import Value
 
 
-class AbstractEnvironment(ABC):
+class AbstractEnvironmentRecord(ABC):
     @abstractmethod
-    def has_binding(self, name) -> 'Completion':
+    def has_binding(self, name: 'Value') -> 'Completion':
         pass
 
     @abstractmethod
-    def create_mutable_binding(self, name, deletable: 'Value') -> 'Completion':
+    def create_mutable_binding(self, name: 'Value',
+                               deletable: 'Value') -> 'Completion':
         pass
 
     @abstractmethod
-    def create_immutable_binding(self, name, strict: 'Value') -> 'Completion':
+    def create_immutable_binding(self, name: 'Value',
+                                 strict: 'Value') -> 'Completion':
         pass
 
     @abstractmethod
-    def initialize_binding(self, name, value: 'Value') -> 'Completion':
+    def initialize_binding(self, name: 'Value',
+                           value: 'Value') -> 'Completion':
         pass
 
     @abstractmethod
-    def set_mutable_binding(self, name, value: 'Value',
+    def set_mutable_binding(self, name: 'Value', value: 'Value',
                             strict: 'Value') -> 'Completion':
         pass
 
     @abstractmethod
-    def get_binding_value(self, name, strict: 'Value') -> 'Completion':
+    def get_binding_value(self, name: 'Value',
+                          strict: 'Value') -> 'Completion':
         pass
 
     @abstractmethod
-    def delete_binding(self, name) -> 'Completion':
+    def delete_binding(self, name: 'Value') -> 'Completion':
         pass
 
     @abstractmethod

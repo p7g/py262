@@ -1,11 +1,8 @@
-from typing import TYPE_CHECKING, Union
+from typing import Optional
 
-from .abstract_environment import AbstractEnvironment
-
-if TYPE_CHECKING:
-    from py262.value import Value  # noqa: W0611
+from .abstract_environment_record import AbstractEnvironmentRecord
 
 
 class LexicalEnvironment:
-    environment_record: AbstractEnvironment
-    outer_lexical_environment: Union['Value', 'LexicalEnvironment']
+    environment_record: AbstractEnvironmentRecord
+    outer_lexical_environment: Optional['LexicalEnvironment']
