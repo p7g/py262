@@ -1,16 +1,13 @@
-from typing import TYPE_CHECKING, Union
+from typing import Union
 
 from py262.abstract_ops.value import type_of
-from py262.completion import NormalCompletion, ThrowCompletion
-from py262.environment import AbstractEnvironmentRecord
+from py262.completion import Completion, NormalCompletion, ThrowCompletion
+from py262.environment import EnvironmentRecord
 from py262.reference import Reference, SuperReference
 from py262.value import Value, value
 
-if TYPE_CHECKING:
-    from py262.completion import Completion
 
-
-def get_base(ref: Reference) -> Union[Value, AbstractEnvironmentRecord]:
+def get_base(ref: Reference) -> Union[Value, EnvironmentRecord]:
     return ref.base
 
 
@@ -59,7 +56,7 @@ def get_value(v_completion: Completion) -> Completion:
             # https://tc39.es/ecma262/#sec-getvalue
             raise NotImplementedError()
         raise NotImplementedError()
-    assert isinstance(base, AbstractEnvironmentRecord)
+    assert isinstance(base, EnvironmentRecord)
     return base.get_binding_value(get_referenced_name(v),
                                   is_strict_reference(v))
 
@@ -90,7 +87,7 @@ def put_value(v_completion: Completion,
             raise NotImplementedError()
         # https://tc39.es/ecma262/#sec-putvalue
         raise NotImplementedError()
-    assert isinstance(v, AbstractEnvironmentRecord)
+    assert isinstance(v, EnvironmentRecord)
     return base.set_mutable_binding(get_referenced_name(v), w,
                                     is_strict_reference(v))
 
@@ -119,6 +116,6 @@ def initialize_referenced_binding(v_completion: Completion,
 
     base = get_base(v)
 
-    assert isinstance(base, AbstractEnvironmentRecord)
+    assert isinstance(base, EnvironmentRecord)
 
     return base.initialize_binding(get_referenced_name(v), w)

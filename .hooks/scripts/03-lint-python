@@ -14,7 +14,7 @@ if [ "$result" -ne 0 ]; then
   exit $result
 fi
 
-mypy "$repo_root/py262"
+mypy --check-untyped-defs "$repo_root/py262"
 result=$?
 if [ "$result" -ne 0 ]; then
   exit $result

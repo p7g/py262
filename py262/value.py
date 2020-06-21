@@ -1,17 +1,13 @@
 from dataclasses import dataclass
-from typing import TypeVar, Union
+from typing import Union
 
-from py262.completion import NormalCompletion, ThrowCompletion
+from py262.completion import Completion
 from py262.utils import classproperty, singleton
 
 PRIMITIVE_TYPES = ('string', 'boolean', 'number', 'null', 'undefined',
                    'symbol')
 
 UNDEFINED = object()
-
-T = TypeVar('T')
-
-MaybeThrow = Union[NormalCompletion[T], ThrowCompletion]
 
 
 class Value:
@@ -83,17 +79,16 @@ class AccessorProperty(Property):
 
 
 class ObjectValue(Value):
-    def get_prototype_of(self) -> MaybeThrow[Union[NullValue, 'ObjectValue']]:
+    def get_prototype_of(self) -> Completion:
         pass
 
-    def set_prototype_of(self, proto: Union[NullValue, 'ObjectValue']
-                         ) -> MaybeThrow[BooleanValue]:
+    def set_prototype_of(self, proto: Value) -> Completion:
         pass
 
-    def is_extensible(self) -> MaybeThrow[BooleanValue]:
+    def is_extensible(self) -> Completion:
         pass
 
-    def prevent_extensions(self) -> MaybeThrow[BooleanValue]:
+    def prevent_extensions(self) -> Completion:
         pass
 
 

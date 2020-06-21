@@ -31,9 +31,8 @@ class FunctionEnvironmentRecord(DeclarativeEnvironmentRecord):
         self.this_binding_status = ThisBindingStatus.INITIALIZED
         return NormalCompletion(val)
 
-    def has_this_binding(self) -> 'Completion':
-        return NormalCompletion(
-            value(self.this_binding_status != ThisBindingStatus.LEXICAL))
+    def has_this_binding(self) -> Value:
+        return value(self.this_binding_status != ThisBindingStatus.LEXICAL)
 
     def has_super_binding(self) -> 'Completion':
         if self.this_binding_status == ThisBindingStatus.LEXICAL:

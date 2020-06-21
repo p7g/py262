@@ -4,7 +4,7 @@ from typing import Dict, Optional
 from py262.completion import Completion, NormalCompletion, ThrowCompletion
 from py262.value import Value, value
 
-from .abstract_environment_record import AbstractEnvironmentRecord
+from .environment_record import EnvironmentRecord
 
 
 @dataclass
@@ -16,7 +16,7 @@ class Binding:
     value: Optional[Value] = None
 
 
-class DeclarativeEnvironmentRecord(AbstractEnvironmentRecord):
+class DeclarativeEnvironmentRecord(EnvironmentRecord):
     bindings: Dict[Value, Binding]
 
     def __init__(self):
@@ -86,8 +86,8 @@ class DeclarativeEnvironmentRecord(AbstractEnvironmentRecord):
         del self.bindings[name]
         return NormalCompletion(Value.true)
 
-    def has_this_binding(self) -> Completion:
-        return NormalCompletion(Value.false)
+    def has_this_binding(self) -> Value:
+        return Value.false
 
     def has_super_binding(self) -> Completion:
         return NormalCompletion(Value.false)

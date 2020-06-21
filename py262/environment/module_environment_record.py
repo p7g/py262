@@ -41,8 +41,8 @@ class ModuleEnvironmentRecord(DeclarativeEnvironmentRecord):
     def delete_binding(self, name: Value) -> Completion:
         assert False, 'This method should never be invoked'
 
-    def has_this_binding(self) -> Completion:
-        return NormalCompletion(Value.true)
+    def has_this_binding(self) -> Value:
+        return Value.true
 
     def get_this_binding(self) -> Completion:
         return NormalCompletion(Value.undefined)

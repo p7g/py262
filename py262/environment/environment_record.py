@@ -6,7 +6,7 @@ if TYPE_CHECKING:
     from py262.value import Value
 
 
-class AbstractEnvironmentRecord(ABC):
+class EnvironmentRecord(ABC):
     @abstractmethod
     def has_binding(self, name: 'Value') -> 'Completion':
         pass
@@ -41,7 +41,7 @@ class AbstractEnvironmentRecord(ABC):
         pass
 
     @abstractmethod
-    def has_this_binding(self) -> 'Completion':
+    def has_this_binding(self) -> 'Value':
         pass
 
     @abstractmethod

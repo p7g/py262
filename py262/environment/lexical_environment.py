@@ -1,8 +1,8 @@
 from typing import Optional
 
-from .abstract_environment_record import AbstractEnvironmentRecord
+from .environment_record import EnvironmentRecord
 
 
 class LexicalEnvironment:
-    environment_record: AbstractEnvironmentRecord
+    environment_record: EnvironmentRecord
     outer_lexical_environment: Optional['LexicalEnvironment']

@@ -1,10 +1,11 @@
+from typing import Set
 from weakref import WeakSet
 
 
 class schrodinger_property(property):
     '''A class property that cannot be changed once it has been observed'''
     def __init__(self, *args, **kwargs):
-        self.observed = WeakSet()
+        self.observed: Set[object] = WeakSet()
         super().__init__(*args, **kwargs)
 
     def __get__(self, instance, *args, **kwargs):

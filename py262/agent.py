@@ -2,11 +2,16 @@
 This module defines the ECMAScript Agent class
 '''
 
+from typing import List, Optional
+
+from py262.execution_context import ExecutionContext
 from py262.utils import schrodinger_property
 
 
 class Agent:
     '''https://ts39.es/ecma262/#sec-agents'''
+
+    execution_context_stack: List[ExecutionContext]
 
     current_signifier = 0
 
@@ -23,7 +28,7 @@ class Agent:
         self.execution_context_stack = []
 
     @property
-    def running_execution_context(self):
+    def running_execution_context(self) -> ExecutionContext:
         '''Get the execution context that is currently running'''
         return self.execution_context_stack[-1]
 
@@ -42,13 +47,9 @@ class Agent:
         return self._signifier
 
 
-class SurroundingAgent:
-    __instance = None
+surrounding_agent: Optional[Agent] = None
 
-    @classmethod
-    def get(cls):
-        return cls.__instance
 
-    @classmethod
-    def set(cls, agent: Agent):
-        cls.__instance = agent
+def set_surrounding_agent(agent: Agent):
+    global surrounding_agent
+    surrounding_agent = agent

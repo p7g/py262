@@ -58,10 +58,6 @@ class TestDeclarativeEnvironment(TestCase):
         # true if deleted, false if not deletable
         pass
 
-    def test_has_this_binding(self):
-        self.assertIs(Value.false,
-                      self.assertNormalCompletion(self.env.has_this_binding()))
-
     def test_has_super_binding(self):
         self.assertIs(
             Value.false,
